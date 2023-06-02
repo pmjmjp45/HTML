@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <script src="./scoreData.js"></script>
+    <style>
+        body { /*폰트*/
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+        body table { 
+            border-collapse: collapse;
+            width: 310px;
+            border: 0px;
+        }
+        body .itemPrint thead { 
+            border-top: 1px dashed;
+            border-bottom: 1px dashed;
+        }
+        .itemPrint td { /*구매물품 부분 기본정렬 오른쪽*/
+            text-align: right;
+        }
+        .itemPrint tbody tr:nth-child(5n + 2){ /*5번째 줄마다 실선*/
+            border-top: 1px dashed;
+        }
+        body .footer table{ 
+            border-top: 1px dashed;
+        }
+        body .barcode { /*바코드 부분*/
+            width: 310px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <script> 
+        /////////////// 전역 변수로 구매정보 배열에 저장
+        var itemName = ["노브랜드 세탁세제 4L","코디 순한 3겹 데코","냉동 삼겹살 바로구이","파머스픽 1등급 특란 25개입","군밤 100g 4입"
+                    ,"굿모닝 굿밀크 1L","팔도비빔면 4입","대추방울토마토","국산콩 콩나물 300g","다우니 엑스퍼트 실내건조 프레쉬클린"
+                    ,"부대찌개 밀키트","노브랜드 도톰한 물티슈","꿈꾸는콩 촌두부","CJ 꼬마돈까스","숯불 데리야끼 닭꼬치"
+                    ,"피코크 새우볶음밥","삼다수 2L","이롬 황성주 국산콩 검은콩 두유","동원 참치살코기 8입","모카골드 마일드 커피믹스"
+                    ,"크라운쵸코하임 18개입","농심 안성탕면 5입","농심신라면 5입","찰현미 4키로","별미 포기김치 3키로"
+                    ,"목우촌 주부9단 비엔나소시지","피코크 초콜릿 샌드위치 비스킷","CJ 비비고 육개장","CJ 비비고 사골곰탕","코카콜라제로 2L"];
+                    
+        var itemPrice = [4900,31800,12900,8100,7000
+                    ,1800,3000,10000,1200,18500
+                    ,14800,1000,2000,5000,15000
+                    ,12000,1000,9800,18500,32000
+                    ,4800,3300,4100,11800,15900
+                    ,10000,3000,5500,2000,4600];
+                    
+        var itemAmount = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+                    
+        var itemTaxFree = [false,false,true,true,false
+                    ,true,false,true,true,false
+                    ,false,false,true,false,false
+                    ,false,false,false,false,false
+                    ,false,false,false,true,false
+                    ,false,false,false,false,false];
+
+        //////////////날짜 도출 함수
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+        var day = ('0' + today.getDate()).slice(-2);
+        var hour = ('0' + today.getHours()).slice(-2);
+        var min = ('0' + today.getMinutes()).slice(-2);
+        var sec = ('0' + today.getSeconds()).slice(-2);
+        var dateString1 = year + '-' + month  + '-' + day + ' ' + hour + ':' + min; 
+        //영수증 상단
+        var dateString3 = year + month  + day;
+        // 바코드 시간
+        today.setMinutes(today.getMinutes() - 30); // 계산 30분 전에 주차했다고 가정
+        var year = today.getFullYear();
+        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+        var day = ('0' + today.getDate()).slice(-2);
+        var hour = ('0' + today.getHours()).slice(-2);
+        var min = ('0' + today.getMinutes()).slice(-2);
+        var sec = ('0' + today.getSeconds()).slice(-2);
+        var dateString2 = year + '-' + month  + '-' + day + ' ' + hour + ':' + min + ':' + sec;
+        //주차 시간
+
+        function comma(price) {//가격에 콤마 찍는 함수 
+                    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                }
+    </script>
+    <div class="header">
+        <table>
+            <tr>
+                <td><img src="media/emart_logo.png" width="80px"></td>
+                <td>이마트 죽전점 (031)838-1234<br>
+                    206-86-50913 강희석<br>
+                    용인 수지구 포은대로 552
+                </td>
+        </table>
+        영수증 미지참시 교환/환불 불가<br>
+        정상상품에 한함, 30일 이내(신선 7일)<br>
+        ※일부 브랜드매장 제외(매장 고지물참조)<br>
+        교환/환불 구매점에서 가능(결제카드 지참)<br><br>
+        <script>
+            document.write("[구 매]" + dateString1 + "&nbsp;&nbsp;&nbsp;&nbsp;POS:0011-9861<br>");
+        </script>
+    </div>
+    <!--아이템 프린트-->
+    <table class="itemPrint">
+        <thead> <!--헤더-->
+            <tr>
+                <td></td>
+                <td style="text-align: left;">상 품 명</td>
+                <td>단 가</td>
+                <td>수량</td>
+                <td>금 액</td>
+            </tr>
+        </thead>
+        <tbody><!--구입물품-->
+            <script>
+                for(var i = 0; i < itemName.length; i++) {
+                    if (itemTaxFree[i] == true) { // 면세 여부 '*' 표시
+                        document.write("<tr><td>*</td>");
+                    } else {
+                        document.write("<tr><td> </td>");
+                    }
+                    
+                    document.write("<td style='text-align: left;'>" + cutKorean(itemName[i], 14) + "</td>"); // 상품명
+                    document.write("<td>" + comma(itemPrice[i]) + "</td>"); // 가격
+                    document.write("<td>" + comma(itemAmount[i]) + "</td>"); // 수량
+                    document.write("<td>" + comma(itemPrice[i] * itemAmount[i]) + "</td></tr>"); // 금액
+                }
+
+                function cutKorean(contents, length) { // 한글 자르는 함수(한글,길이)
+                    let str_character;
+                    let int_char_count = 0;
+                    let int_contents_length = contents.length;
+
+                    let returnValue = '';
+
+                    for (k = 0; k < int_contents_length; k++) {
+                        str_character = contents.charAt(k);
+                        if (escape(str_character).length > 4)
+                            int_char_count += 2;
+                        else
+                            int_char_count++;
+
+                        if ( int_char_count > length ) {
+                            break;
+                        }
+                        returnValue += str_character;
+                    }
+                    return returnValue;
+                }
+            </script>
+        </tbody>
+    </table><br>
+    <table class="tfooter"> <!--총품목수량, 면세물품, 과세물품, 부가세, 합계 등등-->
+        <script>
+            let freeTotal = 0; // 면세 물품 총액
+            let totalPrice = 0; // 총액
+            let taxTotal = 0; // 과세 물품 과세 후 총액
+        
+            for (var i = 0; i < itemName.length; i++) {
+                if (itemTaxFree[i] == true) {
+                    freeTotal += (itemPrice[i] * itemAmount[i]);
+                } else {
+                    taxTotal += (itemPrice[i] * itemAmount[i]);
+                }
+            }
+        
+            totalPrice = freeTotal + taxTotal;
+            let taxRate = 0.1; // 부가세율
+            let netTaxTotal = Math.floor(taxTotal / (1 + taxRate)); // 과세 물품 과세 전 총액
+            let tax = taxTotal - netTaxTotal; // 세금
+
+            document.write("<tr style='vertical-align: bottom;'><td rowspan='6'>결 제 &nbsp;대 상 </td>");
+            document.write("<td>&nbsp;&nbsp;&nbsp;총 품목 수량</td>");
+            document.write("<td style='text-align: right;'>" + comma(itemName.length) + "</td></tr>");
+            document.write("<tr><td>(*)면 세  물 품</td>");
+            document.write("<td style='text-align: right;'>" + comma(freeTotal) + "</td></tr>");
+            document.write("<tr><td>&nbsp;&nbsp;&nbsp;과 세  물 품</td>");
+            document.write("<td style='text-align: right;'>" + comma(netTaxTotal)+ "</td></tr>");
+            document.write("<tr><td>&nbsp;&nbsp;&nbsp;부   가   세</td>");
+            document.write("<td style='text-align: right;'>" + comma(tax) + "</td></tr>");
+            document.write("<tr><td>&nbsp;&nbsp;&nbsp;합        계</td>");
+            document.write("<td style='text-align: right;'>" + comma(totalPrice) + "</td></tr>");
+            document.write("<tr><td>금 액</td>");
+            document.write("<td style='text-align: right;'>" + comma(totalPrice) + "</td></tr>");
+        </script>
+    </table><!--카드 정보 등등-->
+    <div class="footer">
+        <table>
+            <tr>
+                <td>0012 KEB 하나</td>
+                <td style='text-align: right;'>541707**0484/35860658</td>
+            </tr>
+            <tr>
+                <td>카드결제(IC)</td>
+                <script>
+                    document.write("<td style='text-align: right;'>일시불 /   " + comma(totalPrice) + "</td>");
+                </script>
+            </tr>
+        </table>
+        <table>
+            <tr style="text-align: center;">
+                <td colspan="2">[신세계포인트 적립]</td>
+            </tr>
+            <tr>
+                <td colspan="2">홍*두 고객님의 포인트 현황입니다.</td>
+            </tr>
+                <td>금회발생포인트       9350**9995</td>
+                <script>
+                    document.write("<td style='text-align: right;'>" + Math.floor(totalPrice / 1000) + "</td>");
+                </script>
+            <tr>
+                <td>누계(기용)포인트</td>
+                <script>
+                    document.write("<td style='text-align: right;'>" 
+                        + comma(5473 + Math.floor(totalPrice / 1000)) + "(&nbsp;&nbsp;&nbsp;5,473)</td>");
+                </script>
+            </tr>
+            <tr>
+                <td colspan="2">*신세계포인트 유효기간은 2년입니다.</td>
+            </tr>
+        </table>
+        <table>
+            <tr style="text-align: center;">
+                <td colspan="2">구매금액기준 무료주차시간 자동부여</td>
+            </tr>
+            <tr>
+                <td>차량번호 :</td>
+                <td style='text-align: right;'>34저****</td>
+            </tr>
+            <tr>
+                <td>입차시간 :</td>
+                <script>
+                    document.write("<td style='text-align: right;'>" + dateString2 + "</td>");
+                </script>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>캐셔:084599 양00</td>
+                <td style="text-align: right;">1150</td>
+            </tr>
+        </table>
+    </div>
+    <div class="barcode"> <!--바코드-->
+        <img src="media/barcode.png" width="100px" margin="0"><br>
+        <script>
+            document.write(dateString3 + "/00119861/00275300/31");
+        </script>
+    </div>
+</body>
+</html>
