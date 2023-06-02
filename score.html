@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./scoreData.js"></script>
+    <style>
+        body { /*전체 글씨체, 너비*/
+            font-family: 'Nanum Gothic Coding', monospace;
+            width: 350px;
+        }
+        table { /*테이블 테두리, 너비, 글자 정렬*/
+            border-collapse: collapse;
+            width: 350px;
+            border-top: 4px double;
+            text-align: right;
+        }
+        thead, tbody {
+            border-bottom: 4px double;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        ///////////성적 입력 - Student Class 씀
+        const arr = [];
+        for(let i = 1; i <= 30; i++) {
+            arr.push(new Student(i, "name" + i, Math.floor(Math.random() * 100)
+            , Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)));
+        }
+    </script>
+    <div class="header">
+        <h2 style="text-align: center;">성적집계표</h2>
+        <script>
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = ('0' + (today.getMonth() + 1)).slice(-2);
+            var day = ('0' + today.getDate()).slice(-2);
+            var hour = ('0' + today.getHours()).slice(-2);
+            var min = ('0' + today.getMinutes()).slice(-2);
+            var sec = ('0' + today.getSeconds()).slice(-2);
+            var dateString = year + '-' + month  + '-' + day + ' ' + hour + ':' + min + ':' + sec;
+
+            document.write("<p style='text-align:right'> 출력일자 : " + dateString + "</p>");
+        </script>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <td>번호</td>
+                <td>이름</td>
+                <td>국어</td>
+                <td>영어</td>
+                <td>수학</td>
+                <td>총점</td>
+                <td>평균</td>
+            </tr>
+        </thead>
+        <tbody>
+            <script>
+                // 합계 및 평균을 위한 변수 정의
+                let korTotal = 0;
+                let engTotal = 0;
+                let matTotal = 0;
+                let sumTotal = 0;
+                let avgTotal = 0;
+                for (let Student of arr) { //arr의 연속된 Student의 value값을 가져온다
+                    korTotal += Student.kor;
+                    engTotal += Student.eng;
+                    matTotal += Student.mat;
+                    sumTotal += Student.sum;
+                    avgTotal += Student.avg;
+
+                    ///////////////////개인 점수 출력 부분 
+                    document.write("<tr><td>" + Student.id + "</td>");
+                    document.write("<td>" + Student.name + "</td>");
+                    document.write("<td>" + Student.kor + "</td>");
+                    document.write("<td>" + Student.eng + "</td>");
+                    document.write("<td>" + Student.mat + "</td>");
+                    document.write("<td>" + Student.sum + "</td>");
+                    document.write("<td>" + Student.avg.toFixed(2) + "</td></tr>");
+                }
+            </script>
+        </tbody>
+        <tfoot>
+            <tr> <!--합계 출력-->
+                <td colspan="2" style="text-align: left;">합계</td>
+                <script>
+                    document.write("<td>" + korTotal + "</td>");
+                    document.write("<td>" + engTotal + "</td>");
+                    document.write("<td>" + matTotal + "</td>");
+                    document.write("<td>" + sumTotal + "</td>");
+                    document.write("<td>" + avgTotal.toFixed(2) + "</td>");
+                </script>
+            </tr>
+            <tr> <!--평균 출력-->
+                <td colspan="2" style="text-align: left;">평균</td>
+                <script>
+                    document.write("<td>" + (korTotal/30).toFixed(2) + "</td>");
+                    document.write("<td>" + (engTotal/30).toFixed(2) + "</td>");
+                    document.write("<td>" + (matTotal/30).toFixed(2) + "</td>");
+                    document.write("<td>" + (sumTotal/30).toFixed(2) + "</td>");
+                    document.write("<td>" + (avgTotal/30).toFixed(2) + "</td>");
+                </script>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

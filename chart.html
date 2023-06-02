@@ -1,0 +1,58 @@
+<!doctype html>
+
+<!--[if lte IE 8]><SCRIPT src='source/excanvas.js'></script><![endif]-->
+<SCRIPT src='https://rawgit.com/FVANCOP/ChartNew.js/master/ChartNew.js'></script>
+<SCRIPT src='../Add-ins/shapesInChart.js'></script>
+<SCRIPT src='../Add-ins/drawLegend.js'></script>
+<script src="./score.html"></script>
+
+<SCRIPT>
+
+defCanvasWidth=1200; //전체 너비
+defCanvasHeight=600; //전체 높이
+
+let nameArr = []; // 이름 저장 배열
+let scoreArr = []; // 점수 저장 배열
+for (let i = 1; i <=20; i++) { // 20명 이름과 점수 배열에 저장
+    nameArr.push("name" + i); 
+    scoreArr.push(Math.floor(Math.random() * 100));
+}
+var mydata1 = {
+	labels : nameArr, //레이블: 이름
+	datasets : [ 
+		{
+			fillColor : "red",
+			strokeColor : "rgba(220,220,220,1)",
+			data : scoreArr, // 데이터셋은 점수
+			axis : 1,
+		}
+	]
+}   
+
+var opt1 = {
+      canvasBorders : true,
+      endDrawScaleFunction : drawShapes
+}
+
+</SCRIPT>
+
+<html>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<head>
+		<title>Student score graph</title> <!--탭 제목-->
+	</head>
+	<body>
+   
+  <center>
+    <FONT SIZE=6><B>Student score graph</B></FONT><BR>
+
+    <script>
+
+    document.write("<canvas id=\"canvas_Bar1\" height=\""+defCanvasHeight+"\" width=\""+defCanvasWidth+"\"></canvas>");
+window.onload = function() { // 페이지 로드되면 자동으로 익명함수 실행
+    var myBar1 = new Chart(document.getElementById("canvas_Bar1").getContext("2d")).Bar(mydata1,opt1);
+}
+
+    </script>
+  </body>
+</html>
