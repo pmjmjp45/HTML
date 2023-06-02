@@ -5,7 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="./scoreData.js"></script>
+    <script src="./scoreData.js">
+        class Student {
+        id;
+        name;
+        kor;
+        eng;
+        mat;
+        sum;
+        avg;
+
+        constructor(id, name, kor, eng, mat, sum, avg) {
+            this.id = id;
+            this.name = name;
+            this.kor = kor;
+            this.eng = eng;
+            this.mat = mat;
+            this.sum = kor + eng + mat;
+            this.avg = (kor + eng + mat) / 3;
+
+        }
+    }
+    </script>
     <style>
         body { /*전체 글씨체, 너비*/
             font-family: 'Nanum Gothic Coding', monospace;
