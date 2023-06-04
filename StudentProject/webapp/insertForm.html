@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript">
+ 
+    function characterCheck(obj){
+ 		var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi; 
+
+ 			if( regExp.test(obj.value) ){
+	
+ 				obj.value = null;
+  			}
+    }
+  </script>
+</head>
+<body>
+    <form method="get" action="InsertDB.jsp">
+    <table>
+        <tr>
+            <td>이름</td>
+            <td><input name="name" type="text" onkeyup="characterCheck(this)" style="width:100px" maxlength="10" required/></td>
+        </tr>
+        <tr>
+            <td>학번</td>
+            <td>자동 부여</td>
+        </tr>
+        <tr>
+            <td>국어</td>
+            <td><input name="kor" type="number" min="1" max="100" style="width:100px;" required/></td>
+        </tr>
+        <tr>
+            <td>영어</td>
+            <td><input name="eng" type="number" min="1" max="100" style="width:100px;" required/></td>
+        </tr>
+        <tr>
+            <td>수학</td>
+            <td><input name="math" type="number" min="1" max="100" style="width:100px;" required/></td>
+        </tr>
+    </table>
+    <input type="submit" value="성적추가"/>
+    </form> 
+</body>
+</html>
